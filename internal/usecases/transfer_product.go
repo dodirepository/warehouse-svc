@@ -84,7 +84,7 @@ func (w WarehouseUsecase) valiadateWarehouse(ctx context.Context, req usecases.P
 
 	if whTo == nil {
 		return &usecases.ErrorResponse{
-			Message: fmt.Sprintf("target warehouse with id: %s not found", req.ToWarehouseID),
+			Message: fmt.Sprintf("target warehouse with id: %d not found", req.ToWarehouseID),
 			Status:  http.StatusNotFound,
 		}
 	}
