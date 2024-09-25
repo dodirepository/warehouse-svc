@@ -1,0 +1,37 @@
+# Use an official Golang image as the base image
+FROM golang:1.22-alpine
+
+RUN apk update && \
+    apk add bash git && \
+    apk add gcc && \
+    apk add musl-dev && \
+    apk add curl && \
+    apk add openssh && \
+    apk add --update make
+
+# Set the Current Working Directory inside the container
+WORKDIR /app
+
+# Copy go.mod and go.sum files to download dependencies
+COPY go.mod go.sum ./
+
+# Download Go modules
+RUN go mod download
+
+# Copy the source code into the container
+COPY . .
+
+# Copy entrypoint script into the container
+COPY entrypoint.sh /entrypoint.sh
+
+# # Make the entrypoint script executable
+RUN chmod +x /entrypoint.sh
+
+
+# Expose port 8080
+EXPOSE 8080
+
+# Use the entrypoint script
+ENTRYPOINT ["/entrypoint.sh"]
+# CMD ["go", "run", "main.go", "serve"]
+
